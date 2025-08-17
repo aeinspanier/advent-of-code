@@ -32,14 +32,48 @@ func main() {
 	sort.Ints(leftList)
 	sort.Ints(rightList)
 
+	leftCounter, rightCounter := getDataStructures(leftList, rightList)
+
+	totalDistance := calculateTotalDistance(leftList, rightList)
+
+	similarityScore := calculateSimilarityScore(leftList, leftCounter, rightCounter)
+
+	fmt.Printf("Total distance between the lists: %d\n", totalDistance)
+	fmt.Printf("Similarity Score: %d\n", similarityScore)
+}
+
+func getDataStructures(leftList []int, rightList []int) (map[int]int, map[int]int) {
+	leftCounter := make(map[int]int)
+	rightCounter := make(map[int]int)
+
+	for i := 0; i < len(leftList); i++ {
+		leftCounter[leftList[i]]++
+		rightCounter[rightList[i]]++
+	}
+
+	return leftCounter, rightCounter
+}
+
+func calculateSimilarityScore(leftList []int, leftCounter map[int]int, rightCounter map[int]int) int {
+	similarityScore := 0
+
+	for leftNum := range leftCounter {
+		if rightCount, exists := rightCounter[leftNum]; exists {
+			similarityScore += leftNum * rightCount
+		}
+	}
+
+	return similarityScore
+}
+
+func calculateTotalDistance(leftList []int, rightList []int) int {
 	// Calculate total distance
 	totalDistance := 0
 	for i := 0; i < len(leftList); i++ {
 		distance := abs(leftList[i] - rightList[i])
 		totalDistance += distance
 	}
-
-	fmt.Printf("Total distance between the lists: %d\n", totalDistance)
+	return totalDistance
 }
 
 // scanInputFile scans the input file and returns two slices of integers
