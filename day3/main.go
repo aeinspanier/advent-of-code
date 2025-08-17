@@ -41,6 +41,25 @@ func main() {
 
 	fmt.Printf("Total of operations: %d\n", total)
 
+	mulStringsConditional := getAllMulStrings(input, `(do\(\)|don't\(\)|mul\(\s*\d+\s*,\s*\d+\s*\))`)
+
+	total2 := 0
+	tally := true
+
+	for _, stmt := range mulStringsConditional {
+		if stmt == "do()" {
+			tally = true
+		} else if stmt == "don't()" {
+			tally = false
+		} else if tally {
+			total2 += multiply(stmt)
+		} else {
+			//fmt.Printf("excluded stmt: %s\n", stmt)
+		}
+	}
+
+	fmt.Printf("Total of do() operations: %d\n", total2)
+
 }
 
 func multiply(mulStmt string) int {
